@@ -1,0 +1,55 @@
+package main
+
+import "fmt"
+
+templ articleListComponent(articles []Article) {
+	<div class="flex flex-col article-cards-container">
+		<h3 class="text-white text-5xl my-32 place-self-center">Sporza</h3>
+		<div class="article-cards-list flex">
+			<ul class="grid gap-14 grid-cols-1">
+				for _, article := range articles {
+					<li
+ 						class="border-0 rounded-md bg-gray-50 p-10 cursor-pointer article-card"
+ 						hx-get="/get-article"
+ 						hx-target=".article-cards-list"
+ 						hx-swap="innerHTML"
+ 						hx-vals={ fmt.Sprintf("{\"url\": \"%s\"}", article.Url) }
+					>
+						<input id="url" value={ article.Url } type="hidden"/>
+						<p>{ article.Title }</p>
+					</li>
+				}
+			</ul>
+		</div>
+	</div>
+}
+
+templ page(articles []Article) {
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Sporza</title>
+			<script src="/public/assets/js/htmx.min.js"></script>
+			<script src="/public/assets/js/Readability.js"></script>
+			<link rel="stylesheet" href="/public/css/styles.css"/>
+		</head>
+		<body class="bg-gray-800 flex justify-center">
+			<div class="root-container">
+				@articleListComponent(articles)
+			</div>
+		</body>
+	</html>
+}
+
+templ article(content templ.Component) {
+	<div class="article-detail flex mb-10" hx-get="/get-article" hx-target=".article-card" hx-swap="innerHTML">
+		<div
+ 			class="border-0 rounded-md bg-gray-50 p-10 article-detail-card place-self-center cursor-pointer max-w-prose"
+ 			hx-get="/get-articles"
+ 			hx-target=".root-container"
+ 			hx-swap="innerHTML"
+		>
+			@content
+		</div>
+	</div>
+}
