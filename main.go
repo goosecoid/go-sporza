@@ -227,9 +227,20 @@ func parseHtml(html string) templ.Component {
 }
 
 func main() {
-	dbPath := os.Getenv("SQLITE_DB_PATH")
+	var dbPath string
+	dbPath = os.Getenv("SQLITE_DB_PATH")
 	if len(dbPath) == 0 {
-		log.Fatalf("please specifiy the SQLITE_DB_PATH env var")
+		path, err := os.Getwd()
+		if err != nil {
+			log.Fatalf("Could not find cwd: %v", err)
+		}
+		log.Printf("please specifiy the SQLITE_DB_PATH env var. falling back to default value: %s\n", path)
+		os.Setenv("SQLITE_DB_PATH", fmt.Sprintf("%s/app.db", path))
+		dbPath = os.Getenv("SQLITE_DB_PATH")
+		fmt.Printf("PATH: %s\n", dbPath)
+		if len(dbPath) == 0 {
+			log.Fatalf("please specifiy the SQLITE_DB_PATH env var. falling back to default value")
+		}
 	}
 	initDatabase(dbPath)
 	if db == nil {
@@ -240,6 +251,7 @@ func main() {
 	}
 	log.Println("Db init succesful")
 	count, err := getArticlesCount()
+	log.Printf("Currently stored articles: %d", count)
 	if err != nil {
 		log.Fatalf("could not query row count for the articles table: %v", err)
 	}

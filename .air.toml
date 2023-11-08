@@ -21,7 +21,7 @@ tmp_dir = "tmp"
   poll = false
   poll_interval = 0
   post_cmd = []
-  pre_cmd = ["export SQLITE_DB_PATH=app.db", "tailwindcss -o css/styles.css --minify", "templ generate"]
+  pre_cmd = ["go run bootstrap/bootstrap.go", "tailwindcss -o css/styles.css --minify", "templ generate"]
   rerun = false
   rerun_delay = 500
   send_interrupt = false

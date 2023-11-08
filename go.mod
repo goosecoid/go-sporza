@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/a-h/templ v0.2.408
-	github.com/playwright-community/playwright-go v0.3800.0
+	github.com/playwright-community/playwright-go v0.3900.0
 	modernc.org/sqlite v1.26.0
 )
 
