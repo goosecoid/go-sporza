@@ -9,7 +9,7 @@ templ articleListComponent(articles []Article) {
 			<ul class="grid gap-14 grid-cols-1">
 				for _, article := range articles {
 					<li
- 						class="border-0 rounded-md bg-gray-50 p-10 cursor-pointer article-card"
+ 						class="border-0 rounded-md bg-gray-50 p-10 cursor-pointer article-card flex flex-row items-center place-content-between"
  						hx-get="/get-article"
  						hx-target=".article-cards-list"
  						hx-swap="innerHTML"
@@ -17,6 +17,7 @@ templ articleListComponent(articles []Article) {
 					>
 						<input id="url" value={ article.Url } type="hidden"/>
 						<p>{ article.Title }</p>
+                        <img id="spinner" class="htmx-indicator" src="/public/assets/svg/oval.svg"/>
 					</li>
 				}
 			</ul>
