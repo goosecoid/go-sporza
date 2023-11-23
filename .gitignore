@@ -1,3 +1,4 @@
 tmp/**
 assets/**
 app.db
+.DS_Store
