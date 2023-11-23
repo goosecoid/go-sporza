@@ -55,10 +55,26 @@ func main() {
 	_, err = exec.LookPath("playwright")
 	if err != nil {
 		cmd := exec.Command("sh", "-c", "go install github.com/playwright-community/playwright-go/cmd/playwright@latest && playwright install --with-deps")
-		log.Println("installing plaaywright and its drivers...")
+		log.Println("installing playwright and its drivers...")
 		log.Println("hang tight, it can take a while")
 		if err := cmd.Run(); err != nil {
 			log.Fatalf("error executing playwright installation: %v", err)
+		}
+	}
+	_, err = exec.LookPath("templ")
+	if err != nil {
+		cmd := exec.Command("sh", "-c", "go install github.com/a-h/templ/cmd/templ@latest")
+		log.Println("installing templ...")
+		if err := cmd.Run(); err != nil {
+			log.Fatalf("error executing templ installation: %v", err)
+		}
+	}
+	_, err = exec.LookPath("air")
+	if err != nil {
+		cmd := exec.Command("sh", "-c", "go install github.com/cosmtrek/air@latest")
+		log.Println("installing air...")
+		if err := cmd.Run(); err != nil {
+			log.Fatalf("error executing air installation: %v", err)
 		}
 	}
 	log.Println("Bootstrap complete!")
