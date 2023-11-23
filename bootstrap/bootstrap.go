@@ -10,15 +10,6 @@ import (
 )
 
 func main() {
-	// Create db file if not exists
-	// if _, err := os.Stat("app.db"); errors.Is(err, os.ErrNotExist) {
-	// 	log.Println("app.db doesn't exist, creating one...")
-	// }
-	// _, err := os.Create("app.db")
-	// if err != nil {
-	// 	log.Fatalf("could not create app.db file: %v", err)
-	// }
-
 	// Fetch all necessary js
 	if _, err := os.Stat("assets/js/htmx.min.js"); errors.Is(err, os.ErrNotExist) {
 		log.Println("HTMX lib doesn't exist, fetching...")
@@ -57,9 +48,18 @@ func main() {
 	_, err = exec.LookPath("tailwindcss")
 	if err != nil {
 		log.Fatalf("no tailwind standalone executable found, please install one. See: %s. Exiting with error: %v",
-		"https://tailwindcss.com/blog/standalone-cli",
-		err)
+			"https://tailwindcss.com/blog/standalone-cli",
+			err)
 	}
 
+	_, err = exec.LookPath("playwright")
+	if err != nil {
+		cmd := exec.Command("sh", "-c", "go install github.com/playwright-community/playwright-go/cmd/playwright@latest && playwright install --with-deps")
+		log.Println("installing plaaywright and its drivers...")
+		log.Println("hang tight, it can take a while")
+		if err := cmd.Run(); err != nil {
+			log.Fatalf("error executing playwright installation: %v", err)
+		}
+	}
 	log.Println("Bootstrap complete!")
 }
